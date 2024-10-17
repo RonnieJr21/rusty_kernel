@@ -1,4 +1,4 @@
-use core::{fmt, ptr};
+use core::{fmt::{self, Result, Write}, ptr};
 
 const BUFFER_HEIGHT: usize = 25;
 const BUFFER_WIDTH: usize = 80;
@@ -64,9 +64,6 @@ impl Writer {
                     self.new_line();
                 }
 
-                let row = self.row_position;;
-                let col = self.column_position;
-
                 let color_code = self.color_code;
 
                 unsafe { ptr::write_volatile( &mut self.buffer.chars[self.row_position][self.column_position], ScreenChar {
@@ -108,5 +105,7 @@ pub fn write_to_vga_buffer(){
 
     writer.write_byte(b'H');
     writer.write_string("ello World!\n");
-    writer.write_string("This is pretty cool!");
+    writer.write_string("This is pretty cool!\n");
+    write!(writer, "The data is {}, and {} isnt this neat!\n", 27.3, "Ronnie").unwrap();
+
 }
